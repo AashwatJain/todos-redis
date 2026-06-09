@@ -6,7 +6,7 @@ A simple and lightning-fast Todo API backend connected to MongoDB, implementing 
 
 - **Blazing Fast Responses:** The first request is served from MongoDB, and all subsequent requests are served from the Redis Cache.
 - **Cache Invalidation:** When a new Todo is added, the cache is automatically cleared so the user always gets fresh data.
-- **IP-Based Rate Limiting:** Allows a maximum of 10 requests from a single IP address per minute, throwing a `400 Rate limit exceeded` error afterward. The counter resets automatically.
+- **IP-Based Rate Limiting:** Allows a maximum of 10 requests from a single IP address per minute, throwing a `429 Rate limit exceeded` error afterward. The counter resets automatically.
 
 ## 🛠️ Tech Stack
 
