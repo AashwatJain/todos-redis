@@ -1,12 +1,12 @@
-# Redis Project 2: Rate-Limited Cached API 🚀
+# Rate-Limited Cached API 🚀
 
-Ek simple aur lightning-fast Todo API backend jo MongoDB se connected hai, aur jisme **Redis Caching** aur **Rate Limiting** implement ki gayi hai. Ye project dikhata hai ki kaise hum API response time ko under 10ms la sakte hain aur apne server ko spam se bacha sakte hain.
+A simple and lightning-fast Todo API backend connected to MongoDB, implementing **Redis Caching** and **Rate Limiting**. This project demonstrates how to bring API response times down to under 10ms and protect your server from spam.
 
 ## 🌟 Features
 
-- **Blazing Fast Responses:** Pehli request MongoDB se aati hai, uske baad ki saari requests Redis Cache se serve hoti hain.
-- **Cache Invalidation:** Jab naya Todo add hota hai, cache automatically clear ho jata hai taki user ko hamesha fresh data mile.
-- **IP-Based Rate Limiting:** Ek single IP address se maximum 10 requests allow karta hai uske baad `400 Rate limit exceeded` throw karta hai. Ek minute me counter reset hota hai.
+- **Blazing Fast Responses:** The first request is served from MongoDB, and all subsequent requests are served from the Redis Cache.
+- **Cache Invalidation:** When a new Todo is added, the cache is automatically cleared so the user always gets fresh data.
+- **IP-Based Rate Limiting:** Allows a maximum of 10 requests from a single IP address per minute, throwing a `400 Rate limit exceeded` error afterward. The counter resets automatically.
 
 ## 🛠️ Tech Stack
 
@@ -17,7 +17,7 @@ Ek simple aur lightning-fast Todo API backend jo MongoDB se connected hai, aur j
 ## 🚀 Getting Started
 
 ### Prerequisites
-Make sure aapke system pe **Node.js**, **MongoDB**, aur **Redis Server** chal rahe hon.
+Make sure you have **Node.js**, **MongoDB**, and **Redis Server** running on your system.
 
 ### 1. Install Dependencies
 ```bash
@@ -25,7 +25,7 @@ npm install
 ```
 
 ### 2. Environment Variables Setup
-Root folder me ek `.env` file banayein aur ye add karein:
+Create a `.env` file in the root folder and add the following:
 ```env
 PORT=8000
 MONGODB_URI=mongodb://localhost:27017/todo-redis
@@ -34,12 +34,12 @@ MONGODB_URI=mongodb://localhost:27017/todo-redis
 ### 3. Run the Server
 ```bash
 npm start
-# Server start ho jayega http://localhost:8000 pe
+# The server will start on http://localhost:8000
 ```
 
 ## 📡 API Endpoints
 
-### 1. Naya Todo Banao
+### 1. Create a New Todo
 **POST** `/todos`
 ```json
 // Request Body
@@ -48,16 +48,16 @@ npm start
 }
 ```
 
-### 2. Saare Todos Fetch Karo (Cached)
+### 2. Fetch All Todos (Cached)
 **GET** `/todos`
-- **Cache Miss:** MongoDB se aayega (thoda time lega) aur Redis me 100 seconds ke liye save ho jayega.
-- **Cache Hit:** Redis se aayega (Under 10ms).
+- **Cache Miss:** Fetches from MongoDB (takes slightly longer) and saves in Redis for 100 seconds.
+- **Cache Hit:** Served directly from Redis (Under 10ms).
 
-### 3. Single Todo Fetch Karo (Cached)
+### 3. Fetch Single Todo (Cached)
 **GET** `/todo/:id`
-- Specific todo ko uski ID se MongoDB ya Redis cache se fetch karta hai.
+- Fetches a specific todo by its ID from either the Redis cache or MongoDB.
 
 ## 💡 Concepts Used
-- **Redis `SET` & `GET`:** Data ko JSON string me serialize/deserialize karke store karne ke liye.
-- **Redis `DEL`:** Cache invalidate karne ke liye jab Database me update hota hai.
-- **Redis `INCR` & `EXPIRE`:** Atomic rate limiting counter bananne ke liye.
+- **Redis `SET` & `GET`:** Used to serialize/deserialize data into JSON strings for storage.
+- **Redis `DEL`:** Used to invalidate the cache when the database gets updated.
+- **Redis `INCR` & `EXPIRE`:** Used to create an atomic rate-limiting counter.
